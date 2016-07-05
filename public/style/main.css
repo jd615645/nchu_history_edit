@@ -1,0 +1,26 @@
+.ui.container {
+  padding-top: 50px;
+}
+.ui.steps {
+  width: 100%
+}
+.openfile {
+  width: 100px;
+  height: 35.3px;
+  overflow: hidden;
+}
+.openfile input {
+  margin-top: -24px;
+  margin-left: -20px;
+  display: block !important;
+  width: 100px !important;
+  height: 35.3px !important;
+  opacity: 0 !important;
+  overflow: hidden !important;
+}
+.menu {
+  width: 100% !important;
+}
+#edit_list {
+  display: none;
+}

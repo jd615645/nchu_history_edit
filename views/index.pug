@@ -1,0 +1,50 @@
+extends layout
+block css
+  link(rel='stylesheet', href='./style/main.css')
+block content
+  .ui.container
+    .ui.steps#steps
+      .active.step
+        i.download.icon
+        .content
+          .title 載入檔案
+          .description 載入data.xml
+      .disabled.step
+        i.edit.icon
+        .content
+          .title 更改內容
+      .disabled.step
+        i.info.icon
+        .content
+          .title 確認修改
+      .disabled.step
+        i.checkmark.icon
+        .content
+          .title 完　　成
+    .ui.negative.icon.message
+      i.warning.sign.icon
+      i.close.icon
+      .header 請選擇data.xml
+    .openfile.ui.button 選擇資料
+      input#file_selector(type='file', onchange='file_viewer.load();')
+
+    .ui.grid#edit_list
+      .four.wide.column
+        .ui.secondary.vertical.pointing.menu
+          a.item.active(value='1')#alumnus
+            | 傑出校友
+          a.item(value='2')#campus
+            | 校園環境
+          a.item(value='3')#history
+            | 大事紀要
+          a.item(value='4')#photo
+            | 拍照明信片
+          a.item(value='5')#principal
+            | 歷代校長
+      .twelve.wide.column
+        .ui.segment
+          p 0 w 0
+
+
+block js
+  script(src='./js/main.js')
