@@ -21,10 +21,12 @@ block content
         i.checkmark.icon
         .content
           .title 完　　成
-    .ui.negative.icon.message
+
+    .ui.negative.icon.message(style='display: none;')
       i.warning.sign.icon
       i.close.icon
       .header 請選擇data.xml
+
     .openfile.ui.button 選擇資料
       input#file_selector(type='file', onchange='file_viewer.load();')
 
@@ -42,9 +44,26 @@ block content
           a.item(value='5')#principal
             | 歷代校長
       .twelve.wide.column
-        .ui.segment
-          p 0 w 0
+        .ui.segment#context
+          table.ui.celled.table
+            h3 1919
+            thead
+              tr
+                th 日期
+                th 標題
+                th 圖片連結
+                th 內文
+                th 編輯
+            tbody
+              tr
+                td 1919/04/18
+                td 臺灣總督府農林專門學校成立
+                td data/history/19190418.jpg
+                td 大正八年（1919）四月十八日，臺灣總督府飭令成立「臺灣總督府農林專門學校」。
+                td
+                  i.edit.icon
+
 
 
 block js
-  script(src='./js/main.js')
+  script(src='./js/file.js')

@@ -1,28 +1,80 @@
 var file_viewer = undefined;
 var file_input, file_name;
 var step = 1;
-var history = [],
+window.history = [],
     principal = [],
     campus = [],
     alumnus = [],
     industry = [];
 
-
 $( window ).load(function() {
   init();
 });
-$('.message').hide();
-$('.ui.accordion').accordion();
 
+$('.ui.accordion').accordion();
 $('#edit_list .four').on('click', 'a', function() {
   $('#edit_list .four a.active').removeClass('active');
   $(this).addClass('active');
+  var which = $(this).attr('id');
+  showContext(which);
+  switch(which) {
+    case 'alumnus':
+      // showAlumnus();
+      break;
+    case 'campus':
+      // showCampus();
+      break;
+    case 'history':
+      // showHistory();
+      break;
+    case 'photo':
+      // showPhoto();
+      break;
+    case 'principal':
+      showPrincipal();
+      break;
+  }
 });
 
 $('.message .close').on('click', function() {
   $(this).closest('.message')
          .fadeOut();
 });
+
+function showPrincipal() {
+  var html = '<div class="ui segment" id="context"><table class="ui celled table"><thead><tr><th>標題</th><th>姓名</th><th>圖片連結</th><th>內文</th><th>編輯</th></tr></thead><tbody>';
+  $.each(principal, function(session , data) {
+    html += '<tr><td>' + data.title + '</td><td>' + data.name + '</td><td>' + data.url + '</td><td>' + data.text + '</td><td><i class="edit icon"></i></td></tr>';
+  });
+  html += '</tbody></table>';
+  $('#context').append($.parseHTML(html));
+}
+
+function showContext(which) {
+  var $contextBlock = $('#context');
+  var contextTitle = [];
+  var html ,title;
+  $contextBlock.empty();
+  switch(which) {
+    case 'alumnus':
+      title = '傑出校友';
+      break;
+    case 'campus':
+      title = '校園環境';
+      break;
+    case 'history':
+      title = '大事紀要';
+      break;
+    case 'photo':
+      title = '拍照明信片';
+      break;
+    case 'principal':
+      title = '歷代校長';
+      break;
+  }
+  html = $.parseHTML('<h2>'+ title +'<i class="add square icon"></i></h2><hr>');
+  $contextBlock.append(html);
+}
 
 function FileViewer(args) {
   for (var p in args)
@@ -64,6 +116,7 @@ FileViewer.prototype.loaded = function() {
     readIndustry($(xml).find('industry'));
 
     $('#edit_list').fadeIn();
+    $('#edit_list .four a:first-child').click();
   }
 }
 
@@ -75,7 +128,6 @@ function init() {
     }
   );
 }
-
 
 function readHistory(data) {
   data.find('year').each(function(yr) {
@@ -219,7 +271,6 @@ function parseXml(xml) {
     }
     catch (e) { dom = null; }
   }
-  else
-    alert("cannot parse xml string!");
+  else { alert("cannot parse xml string!"); }
   return dom;
 }
