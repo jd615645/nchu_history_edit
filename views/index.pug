@@ -39,8 +39,8 @@ block content
             | 校園環境
           a.item(value='3')#history
             | 大事紀要
-          a.item(value='4')#photo
-            | 拍照明信片
+          a.item(value='4')#industry
+            | 校內外表現
           a.item(value='5')#principal
             | 歷代校長
       .twelve.wide.column
@@ -62,7 +62,24 @@ block content
                 td 大正八年（1919）四月十八日，臺灣總督府飭令成立「臺灣總督府農林專門學校」。
                 td
                   i.edit.icon
-
+      .ui.modal#edit-content
+        i.close.icon
+        .header
+          | 編輯內容
+        .content
+          .description
+            | A description can appear on the right
+        .actions
+          .ui.button Submit
+      .ui.modal#add-content
+        i.close.icon
+        .header
+          | 新增內容
+        .content
+          .description
+            | A description can appear on the right
+        .actions
+          .ui.button Submit
 
 
 block js

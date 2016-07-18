@@ -1,11 +1,11 @@
 var file_viewer = undefined;
 var file_input, file_name;
 var step = 1;
-window.history = [],
-    principal = [],
-    campus = [],
-    alumnus = [],
-    industry = [];
+window.alumnus = [];
+window.campus = [];
+window.history = [];
+window.industry = [];
+window.principal = [];
 
 $( window ).load(function() {
   init();
@@ -19,16 +19,16 @@ $('#edit_list .four').on('click', 'a', function() {
   showContext(which);
   switch(which) {
     case 'alumnus':
-      // showAlumnus();
+      showAlumnus();
       break;
     case 'campus':
       // showCampus();
       break;
     case 'history':
-      // showHistory();
+      showHistory();
       break;
-    case 'photo':
-      // showPhoto();
+    case 'industry':
+      showIndustry();
       break;
     case 'principal':
       showPrincipal();
@@ -41,8 +41,59 @@ $('.message .close').on('click', function() {
          .fadeOut();
 });
 
+$('#context').on('click', 'i.icon.edit', function() {
+  $('#edit-content').modal('show');
+});
+$('#context').on('click', 'i.icon.add', function() {
+  $('#add-content').modal('show');
+});
+
+function showAlumnus() {
+  for (var i = 1997; i < alumnus.length; i++) {
+    var html = '<h3>' + i + '</h3><table class="ui celled table"><thead><tr><th style="width: 10%">姓名</th><th>內容</th><th style="width: 25%">圖片連結</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
+    $.each(alumnus[i], function(key, val) {
+      html += '<tr><td>' + val.name + '</td><td>' + val.title + '</td><td>' + val.url + '</td><td><i class="edit icon"></i></td></tr>';
+    });
+    html += '</tbody></table>';
+    $('#context').append($.parseHTML(html));
+  };
+}
+// function showCampus() {
+//   var type = ['校景變遷', '校園生態', '林場映像'];
+//   console.log(campus);
+//   $.each(type, function(ik, iv) {
+//     // console.log(campus[val]);
+//     $.each(campus[iv], function(jk, jv) {
+//     });
+//   });
+// }
+function showHistory() {
+  // console.log(history);
+  $.each(history, function(ik, iv) {
+    var html = '<h3>' + ik + '</h3><table class="ui celled table"><thead><tr><th>日期</th><th style="width: 10%">標題</th><th style="width: 20%">圖片連結</th><th>內文</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
+    try {
+      $.each(history[ik], function(jk, jv) {
+        html += '<tr><td>' + jv.date + '</td><td>' + jv.title + '</td><td>' + jv.url + '</td><td>' + jv.text + '</td><td><i class="edit icon"></i></td></tr>';
+      });
+      html += '</tbody></table>';
+      $('#context').append($.parseHTML(html));
+    }
+    catch(e) {
+      console.log(e);
+    }
+  });
+}
+function showIndustry() {
+  var type = ['in_school', 'out_school'];
+  $.each(type, function(ik, iv) {
+    $.each(industry[iv], function(jk, jv) {
+      console.log(jk);
+    });
+  });
+  // console.log(industry['in_school']);
+}
 function showPrincipal() {
-  var html = '<div class="ui segment" id="context"><table class="ui celled table"><thead><tr><th>標題</th><th>姓名</th><th>圖片連結</th><th>內文</th><th>編輯</th></tr></thead><tbody>';
+  var html = '<table class="ui celled table"><thead><tr><th>標題</th><th style="width: 10%">姓名</th><th>圖片連結</th><th>內文</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
   $.each(principal, function(session , data) {
     html += '<tr><td>' + data.title + '</td><td>' + data.name + '</td><td>' + data.url + '</td><td>' + data.text + '</td><td><i class="edit icon"></i></td></tr>';
   });
@@ -65,8 +116,8 @@ function showContext(which) {
     case 'history':
       title = '大事紀要';
       break;
-    case 'photo':
-      title = '拍照明信片';
+    case 'industry':
+      title = '校內外表現';
       break;
     case 'principal':
       title = '歷代校長';
@@ -132,12 +183,13 @@ function init() {
 function readHistory(data) {
   data.find('year').each(function(yr) {
     var year = $(this).attr('yr');
+    history[year] = [];
     $(this).find('element').each(function() {
       var date = $(this).attr('date'),
           title = $(this).attr('title'),
           url = $(this).attr('url'),
           text = $(this).text();
-      history[year] = new historyData(date, title, url, text);
+      history[year].push(new historyData(date, title, url, text));
     });
   });
 }
@@ -165,11 +217,12 @@ function principalData(title, name, url, text) {
 function readAlumnus(data) {
   data.find('year').each(function(yr) {
     var th = $(this).attr('th').substr(0, 4);
+    alumnus[th] = [];
     $(this).find('element').each(function() {
       var name = $(this).attr('name'),
           title = $(this).attr('title'),
           url = $(this).attr('url');
-      alumnus[th] = new alumnusData(name, title, url);
+      alumnus[th].push(new alumnusData(name, title, url));
     });
   });
   // console.log(alumnus);
@@ -214,7 +267,7 @@ function readCampus(data) {
       $(this).find('element').each(function(i) {
         var name = $(this).attr('name'),
             url = $(this).attr('url');
-        categor[categoryName].push(new campusData(name, url));
+        campus[type].push(new campusData(name, url));
       });
       campus[type] = categor;
     });
@@ -229,7 +282,7 @@ function readCampus(data) {
       $(this).find('element').each(function(i) {
         var name = $(this).attr('name'),
             url = $(this).attr('url');
-        categor[categoryName].push(new campusData(name, url));
+        campus[type].push(new campusData(name, url));
       });
       campus[type] = categor;
     });
@@ -243,10 +296,10 @@ function readCampus(data) {
     $(this).find('element').each(function(i) {
       var name = $(this).attr('name'),
           url = $(this).attr('url');
-      categor[categoryName].push(new campusData(name, url));
+      campus[type].push(new campusData(name, url));
     });
-    campus[type] = categor;
   });
+  // console.log(campus);
 }
 function campusData(name, url) {
   this.name = name;
@@ -274,3 +327,4 @@ function parseXml(xml) {
   else { alert("cannot parse xml string!"); }
   return dom;
 }
+$('.ui.modal').modal();
