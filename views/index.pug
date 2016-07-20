@@ -2,6 +2,7 @@ extends layout
 block css
   link(rel='stylesheet', href='./style/main.css')
 block content
+  #loading
   .ui.container
     .ui.steps#steps
       .active.step
@@ -40,7 +41,7 @@ block content
           a.item(value='3')#history
             | 大事紀要
           a.item(value='4')#industry
-            | 校內外表現
+            | 產學合作
           a.item(value='5')#principal
             | 歷代校長
       .twelve.wide.column
@@ -80,7 +81,6 @@ block content
             | A description can appear on the right
         .actions
           .ui.button Submit
-
 
 block js
   script(src='./js/file.js')
