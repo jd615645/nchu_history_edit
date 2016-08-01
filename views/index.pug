@@ -63,22 +63,184 @@ block content
                 td 大正八年（1919）四月十八日，臺灣總督府飭令成立「臺灣總督府農林專門學校」。
                 td
                   i.edit.icon
-      .ui.modal#edit-content
+      .ui.modal#edit-alumnus
         i.close.icon
         .header
           | 編輯內容
         .content
           .description
-            | A description can appear on the right
+            .ui.form
+              .field
+                label 姓名
+                input(type='text', name='name')
+                label 內容
+                input(type='text', name='title')
+                label 圖片連結
+                input(type='text', name='url')
         .actions
           .ui.button Submit
-      .ui.modal#add-content
+      .ui.modal#edit-campus
+        i.close.icon
+        .header
+          | 編輯內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 標題
+                input(type='text', name='name')
+                label 圖片連結
+                input(type='text', name='url')
+        .actions
+          .ui.button Submit
+      .ui.modal#edit-history
+        i.close.icon
+        .header
+          | 編輯內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 日期
+                input(type='text', name='name')
+                label 標題
+                input(type='text', name='name')
+                label 圖片連結
+                input(type='text', name='url')
+                label 內文
+                input(type='text', name='title')
+        .actions
+          .ui.button Submit
+      .ui.modal#edit-industry
+        i.close.icon
+        .header
+          | 編輯內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 年度
+                input(type='text', name='year')
+                label 獎項
+                input(type='text', name='name')
+                label 系所
+                input(type='text', name='dep')
+                label 得獎人
+                input(type='text', name='award')
+        .actions
+          .ui.button Submit
+      .ui.modal#edit-principal
+        i.close.icon
+        .header
+          | 編輯內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 標題
+                input(type='text', name='title')
+                label 姓名
+                input(type='text', name='name')
+                label 圖片KKO連結
+                input(type='text', name='url')
+                label 內容
+                input(type='text', name='text')
+        .actions
+          .ui.button Submit
+
+      //- 新增項目
+      .ui.modal#add-alumnus
         i.close.icon
         .header
           | 新增內容
         .content
           .description
-            | A description can appear on the right
+            .ui.form
+              .field
+                label 項目
+                input(type='text', name='item')
+                label 姓名
+                input(type='text', name='name')
+                label 內容
+                input(type='text', name='title')
+                label 圖片連結
+                input(type='text', name='url')
+        .actions
+          .ui.button Submit
+      .ui.modal#add-campus
+        i.close.icon
+        .header
+          | 新增內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 項目
+                input(type='text', name='item')
+                label 標題
+                input(type='text', name='name')
+                label 圖片連結
+                input(type='text', name='url')
+        .actions
+          .ui.button Submit
+      .ui.modal#add-history
+        i.close.icon
+        .header
+          | 新增內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 項目
+                input(type='text', name='item')
+                label 日期
+                input(type='text', name='name')
+                label 標題
+                input(type='text', name='name')
+                label 圖片連結
+                input(type='text', name='url')
+                label 內文
+                input(type='text', name='title')
+        .actions
+          .ui.button Submit
+      .ui.modal#add-industry
+        i.close.icon
+        .header
+          | 新增內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 項目
+                input(type='text', name='item')
+                label 年度
+                input(type='text', name='year')
+                label 獎項
+                input(type='text', name='name')
+                label 系所
+                input(type='text', name='dep')
+                label 得獎人
+                input(type='text', name='award')
+        .actions
+          .ui.button Submit
+      .ui.modal#add-principal
+        i.close.icon
+        .header
+          | 新增內容
+        .content
+          .description
+            .ui.form
+              .field
+                label 項目
+                input(type='text', name='item')
+                label 標題
+                input(type='text', name='title')
+                label 姓名
+                input(type='text', name='name')
+                label 圖片KKO連結
+                input(type='text', name='url')
+                label 內容
+                input(type='text', name='text')
         .actions
           .ui.button Submit
 

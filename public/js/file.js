@@ -50,29 +50,31 @@ $('.message .close').on('click', function() {
 });
 
 $('#context').on('click', 'i.icon.edit', function() {
-  $('#edit-content').modal('show');
+  var which = $(this).attr('value');
+  $('#edit-' + which).modal('show');
 });
 $('#context').on('click', 'i.icon.add', function() {
-  $('#add-content').modal('show');
+  var which = $(this).attr('value');
+  $('#add-' + which).modal('show');
 });
 
 function showAlumnus() {
   for (var i = 1997; i < alumnus.length; i++) {
     var html = '<h3>' + i + '</h3><table class="ui celled table"><thead><tr><th style="width: 10%">姓名</th><th>內容</th><th style="width: 25%">圖片連結</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
     $.each(alumnus[i], function(key, val) {
-      html += '<tr><td>' + val.name + '</td><td>' + val.title + '</td><td>' + val.url + '</td><td><i class="edit icon"></i></td></tr>';
+      html += '<tr><td>' + val.name + '</td><td>' + val.title + '</td><td>' + val.url + '</td><td><i class="edit icon" value="alumnus"></i></td></tr>';
     });
     html += '</tbody></table>';
     $('#context').append($.parseHTML(html));
   };
 }
 function showCampus() {
-  console.log(campus);
+  // console.log(campus);
   for(x in campus) {
     var html = '<h3>' + x + '</h3><table class="ui celled table"><thead><tr><th style="width: 10%">標題</th><th style="width: 25%">圖片連結</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
     for(y in campus[x]) {
       $.each(campus[x][y], function(key, val) {
-        html += '<tr><td>' + val.name + '</td><td>' + val.url + '</td><td><i class="edit icon"></i></td></tr>';
+        html += '<tr><td>' + val.name + '</td><td>' + val.url + '</td><td><i class="edit icon" value="campus"></i></td></tr>';
       });
     }
     html += '</tbody></table>';
@@ -85,7 +87,7 @@ function showHistory() {
     var html = '<h3>' + ik + '</h3><table class="ui celled table"><thead><tr><th>日期</th><th style="width: 10%">標題</th><th style="width: 20%">圖片連結</th><th>內文</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
     try {
       $.each(history[ik], function(jk, jv) {
-        html += '<tr><td>' + jv.date + '</td><td>' + jv.title + '</td><td>' + jv.url + '</td><td>' + jv.text + '</td><td><i class="edit icon"></i></td></tr>';
+        html += '<tr><td>' + jv.date + '</td><td>' + jv.title + '</td><td>' + jv.url + '</td><td>' + jv.text + '</td><td><i class="edit icon" value="history"></i></td></tr>';
       });
       html += '</tbody></table>';
       $('#context').append($.parseHTML(html));
@@ -103,7 +105,7 @@ function showIndustry() {
     for(y in industry[x]) {
       html = '<h3>' + y + '</h3><table class="ui celled table"><thead><tr><th style="width: 8%">年度</th><th style="width: 30%">獎項</th><th style="width: 20%">系所</th><th style="width: 10%">得獎人</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
       $.each(industry[x][y], function(key, val) {
-        html += '<tr><td>' + val.year + '</td><td>' + val.award + '</td><td>' + val.dep + '</td><td>' + val.name + '</td><td><i class="edit icon"></i></td></tr>';
+        html += '<tr><td>' + val.year + '</td><td>' + val.award + '</td><td>' + val.dep + '</td><td>' + val.name + '</td><td><i class="edit icon" value="industry"></i></td></tr>';
       });
       html += '</tbody></table>';
       $('#context').append($.parseHTML(html));
@@ -113,7 +115,7 @@ function showIndustry() {
 function showPrincipal() {
   var html = '<table class="ui celled table"><thead><tr><th>標題</th><th style="width: 10%">姓名</th><th>圖片連結</th><th>內文</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
   $.each(principal, function(session , data) {
-    html += '<tr><td>' + data.title + '</td><td>' + data.name + '</td><td>' + data.url + '</td><td>' + data.text + '</td><td><i class="edit icon"></i></td></tr>';
+    html += '<tr><td>' + data.title + '</td><td>' + data.name + '</td><td>' + data.url + '</td><td>' + data.text + '</td><td><i class="edit icon" value="principal"></i></td></tr>';
   });
   html += '</tbody></table>';
   $('#context').append($.parseHTML(html));
@@ -141,7 +143,7 @@ function showContext(which) {
       title = '歷代校長';
       break;
   }
-  html = $.parseHTML('<h2>'+ title +'<i class="add square icon"></i></h2><hr>');
+  html = $.parseHTML('<h2>'+ title +'<i class="add square icon" value="' + which + '"' + '></i></h2><hr>');
   $contextBlock.append(html);
 }
 
