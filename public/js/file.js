@@ -58,9 +58,37 @@ $('#context').on('click', 'i.icon.add', function() {
   $('#add-' + which).modal('show');
 });
 
+$('#add-alumnus .button').click(function() {
+  var item = $('#add-alumnus input[name="item"]').val(),
+      name = $('#add-alumnus input[name="name"]').val(),
+      title = $('#add-alumnus input[name="title"]').val(),
+      url = $('#add-alumnus input[name="url"]').val();
+  if (item != '' && name != '' && title != '' && url != '') {
+    var newData = '<element url="' + url + '" title="' + title + '" name="' + name + '" ></element>';
+    $(xml).find('alumnus year[th="' + item +'"]').append(newData);
+    // console.log(xml2string(xml));
+    $.ajax({
+      type :"GET",
+      url  : "/save",
+      data : 'hi',
+      dataType: "text",
+      timeout: 5000,
+      success: function(){
+        alert('ok!');
+      },
+      error: function(){
+        alert('error!');
+      }
+    });
+  }
+  else {
+    console.log('有空位喔');
+  }
+});
+
 function showAlumnus() {
   for (var i = 1997; i < alumnus.length; i++) {
-    var html = '<h3>' + i + '</h3><table class="ui celled table"><thead><tr><th style="width: 10%">姓名</th><th>內容</th><th style="width: 25%">圖片連結</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
+    var html = '<h3>' + i + '第' + dec2chinesenum(i-1996) + '屆</h3><table class="ui celled table"><thead><tr><th style="width: 10%">姓名</th><th>內容</th><th style="width: 25%">圖片連結</th><th style="width: 7%">編輯</th></tr></thead><tbody>';
     $.each(alumnus[i], function(key, val) {
       html += '<tr><td>' + val.name + '</td><td>' + val.title + '</td><td>' + val.url + '</td><td><i class="edit icon" value="alumnus"></i></td></tr>';
     });
@@ -346,4 +374,21 @@ function parseXml(xml) {
   else { alert("cannot parse xml string!"); }
   return dom;
 }
+
+function xml2string(xmlObject) {
+	if (window.ActiveXObject) { // for IE
+		return xmlObject.xml;
+	} else {
+		return (new XMLSerializer()).serializeToString(xmlObject);
+	}
+}
+
+// 數字轉中文
+function dec2chinesenum(num) {
+  var chinesenum = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+  var tens = parseInt(num/10);
+  var digits = parseInt(num%10);
+  return (chinesenum[tens]=='一' ? '' : chinesenum[tens]) + (tens!=0 ? '十' : '') + chinesenum[digits];
+}
+
 $('.ui.modal').modal();
