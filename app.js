@@ -4,10 +4,14 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cheerio = require('cheerio');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 
 var app = express();
+// call socket.io to the app
+app.io = require('socket.io')();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,21 +27,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 
-app.get('/save', function(req, res) {
-  console.log(req.test);
-});
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
-
-app.post('/save', function(req, res) {
-  console.log(req.body.objectData);
-  res.contentType('json');
-  res.send({ some: 'json' });
 });
 
 // error handlers
@@ -64,5 +58,29 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// start listen with socket.io
+app.io.on('connection', function(socket){
+  var $;
+  fs.readFile('./public/data/data.xml', function(err, file) {
+    $ = cheerio.load(file);
+  });
+  socket.on('save', function(data){
+    console.log($.html());
+    var selector = data.selector;
+    var newData = data.newData;
+    $(selector).append(newData);
+    saveXml($.html());
+  });
+});
+
+function saveXml(xmlData) {
+  fs.writeFile('./public/data/data.xml', xmlData, function(err) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("The file was saved!");
+    }
+  });
+}
 
 module.exports = app;

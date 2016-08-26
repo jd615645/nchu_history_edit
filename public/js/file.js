@@ -1,6 +1,5 @@
-var file_viewer = undefined;
-var file_input, file_name;
 var step = 1;
+var socket = io.connect();
 
 // window.alumnus = [];
 // window.campus = [];
@@ -15,11 +14,11 @@ var alumnus = [],
     principal = [];
 
 $( window ).load(function() {
-  init();
   $('#loading').hide();
 });
 
 $('.ui.accordion').accordion();
+
 $('#edit_list .four').on('click', 'a', function() {
   $('#edit_list .four a.active').removeClass('active');
   $(this).addClass('active');
@@ -64,22 +63,9 @@ $('#add-alumnus .button').click(function() {
       title = $('#add-alumnus input[name="title"]').val(),
       url = $('#add-alumnus input[name="url"]').val();
   if (item != '' && name != '' && title != '' && url != '') {
+    var selector = 'alumnus year[th="' + item +'"]';
     var newData = '<element url="' + url + '" title="' + title + '" name="' + name + '" ></element>';
-    $(xml).find('alumnus year[th="' + item +'"]').append(newData);
-    // console.log(xml2string(xml));
-    $.ajax({
-      type :"GET",
-      url  : "/save",
-      data : 'hi',
-      dataType: "text",
-      timeout: 5000,
-      success: function(){
-        alert('ok!');
-      },
-      error: function(){
-        alert('error!');
-      }
-    });
+    socket.emit('save', {'selector': selector, 'newData': newData});;
   }
   else {
     console.log('有空位喔');
@@ -175,59 +161,23 @@ function showContext(which) {
   $contextBlock.append(html);
 }
 
-function FileViewer(args) {
-  for (var p in args)
-    this[p] = args[p];
-
-  this.reader = new FileReader();
-
-  this.reader.onloadend = (function(self) {
-    return function() {
-          self.loaded();
-        }
-  })(this);
-}
-FileViewer.prototype.load = function() {
-  this.file = this.controller.files[0];
-  this.reader.readAsText(this.file);
-}
-FileViewer.prototype.loaded = function() {
-  file_name = this.file.name;
-  file_input = this.reader.result;
-  if(file_name != 'data.xml') {
-    // show massage
-    $('.message').fadeIn();
-  }
-  else {
-    // notify
-    $('.message').fadeOut();
-    $('.openfile').fadeOut();
-    // add step
-    $('#steps .step:first-child').removeClass('active');
-    $('#steps .step:nth-child(2)').removeClass('disabled').addClass('active');
-    step = 2;
-
-    xml = parseXml(file_input);
+$.ajax({
+  url: './data/data.xml',
+  type: 'GET',
+  dataType: 'xml',
+  timeout: 1000,
+  success: function(data) {
+    xml = data;
     readHistory($(xml).find('history'));
     readPrincipal($(xml).find('principal'));
     readCampus($(xml).find('campus'));
     readAlumnus($(xml).find('alumnus'));
     readIndustry($(xml).find('industry'));
-
-    $('#edit_list').fadeIn();
     $('#edit_list .four a:first-child').click();
   }
-}
+})
 
-function init() {
-  file_viewer = new FileViewer(
-    {
-      controller: document.getElementById('file_selector'),
-      view_name: document.getElementById('show_filename'),
-    }
-  );
-}
-
+// 讀取xml History Tag
 function readHistory(data) {
   data.find('year').each(function(yr) {
     var year = $(this).attr('yr');
@@ -247,7 +197,7 @@ function historyData(date, title, url, text) {
   this.url = url;
   this.text = text;
 }
-
+// 讀取xml Principal Tag
 function readPrincipal(data) {
   data.find('element').each(function(i) {
     var title = $(this).attr('title'),
@@ -263,7 +213,7 @@ function principalData(title, name, url, text) {
   this.url = url;
   this.text = text;
 }
-
+// 讀取xml Alumnus Tag
 function readAlumnus(data) {
   data.find('year').each(function(yr) {
     var th = $(this).attr('th').substr(0, 4);
@@ -282,7 +232,7 @@ function alumnusData(name, title, url) {
   this.title = title;
   this.url = url;
 }
-
+// 讀取xml Industry Tag
 function readIndustry(data) {
   var school = ['out_school', 'in_school'];
   $.each(school, function(key, val) {
@@ -307,7 +257,7 @@ function industryData(year, name, dep, award) {
   this.dep = dep;
   this.award = award;
 }
-
+// 讀取xml Campus Tag
 function readCampus(data) {
   data.find('scene').each(function() {
     var type = $(this).attr('name');
